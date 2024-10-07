@@ -3,11 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os, time, shutil
 from mpl_toolkits.mplot3d import Axes3D
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
 from PIL import Image
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
 
 
 start_time = time.time()
@@ -136,6 +137,50 @@ if not os.path.exists(train_csv_file) or not os.path.exists(val_csv_file):
 else:
     print("Los archivos CSV ya existen. Cargando datos de los archivos existentes.")
 
+if  os.path.exists(train_csv_file) and  os.path.exists(val_csv_file):
+    train_data = pd.read_csv('train_images_labels.csv')
+    val_data = pd.read_csv('val_images_labels.csv')
+    #entrenamiento
+    X_train = train_data.drop('label', axis=1)  
+    y_train = train_data['label']  
+    #validamiento
+    X_val = val_data.drop('label', axis=1)  
+    y_val = val_data['label'] 
+    #transformar a num
+    le = LabelEncoder()
+    y_train_encoded = le.fit_transform(y_train)
+    y_val_encoded = le.transform(y_val)
+    print("fin de carga de datos")
+#entrenamiento
+dtrain = xgb.DMatrix(X_train, label=y_train_encoded)
+dval = xgb.DMatrix(X_val, label=y_val_encoded)
+params = {
+    'objective': 'multi:softmax', 
+    'num_class': 7,   
+    'max_depth': 6,                  
+    'eta': 0.3,  
+    'min_child_weight': 1,    
+    'subsample': 0.3,
+    'colsample_bytree': 0.3,
+    'eval_metric': 'mlogloss',
+    'seed': 77                                  
+}
+
+model = xgb.train(
+    params,
+    dtrain,
+    num_boost_round=1000,  
+    evals=[(dval, 'validation')],
+    early_stopping_rounds=50  
+)
+
+#prediccion
+y_pred = model.predict(dval)
+print("Accuracy:", accuracy_score(y_val_encoded, y_pred))
+print(classification_report(y_val_encoded, y_pred))
+
+xgb.plot_importance(model)
+plt.show()
 
 end_time = time.time()
 execution_time = end_time - start_time
