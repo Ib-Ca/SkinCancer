@@ -5,6 +5,9 @@ import os, time, shutil
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+import xgboost as xgb
+from PIL import Image
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
 
 start_time = time.time()
@@ -60,6 +63,7 @@ df_train = metadata[metadata['train_or_val'] == 'train']
 #print("valores de validacion: ", df_val['dx'].value_counts())
 
 #mover archivos
+'''
 metadata.set_index('image_id', inplace=True)
 folder_1 = os.listdir('../ham10000_images_part_1')
 folder_2 = os.listdir('../ham10000_images_part_2')
@@ -93,9 +97,45 @@ for image in val_list:
         src = os.path.join('../ham10000_images_part_2', fname)
         dst = os.path.join(val_dir, label, fname)
         shutil.copyfile(src, dst)
-        
-        
-        
+'''        
+
+# Modelo Building-Training
+train_csv_file = 'train_images_labels.csv'
+val_csv_file = 'val_images_labels.csv'
+
+if not os.path.exists(train_csv_file) or not os.path.exists(val_csv_file):
+    train_data = []
+    train_labels = []
+    val_data = []
+    val_labels = []
+
+    def load_images_from_dir(dir, data_list, labels_list):
+        for label in os.listdir(dir):
+            label_dir = os.path.join(dir, label)
+            if os.path.isdir(label_dir):
+                for image_file in os.listdir(label_dir):
+                    if image_file.endswith(('.png', '.jpg', '.jpeg')):
+                        image_path = os.path.join(label_dir, image_file)
+                        image = Image.open(image_path).convert('RGB')  
+                        image = image.resize((28, 28))  
+                        image_array = np.array(image).flatten() 
+                        data_list.append(image_array)
+                        labels_list.append(label) 
+                        
+    load_images_from_dir(train_dir, train_data, train_labels)
+    load_images_from_dir(val_dir, val_data, val_labels)
+
+    df_train = pd.DataFrame(train_data)
+    df_train['label'] = train_labels
+    df_val = pd.DataFrame(val_data)
+    df_val['label'] = val_labels
+    df_train.to_csv(train_csv_file, index=False)
+    df_val.to_csv(val_csv_file, index=False)
+    
+    print(f"Archivos CSV creados: {train_csv_file}, {val_csv_file}")
+else:
+    print("Los archivos CSV ya existen. Cargando datos de los archivos existentes.")
+
 
 end_time = time.time()
 execution_time = end_time - start_time
