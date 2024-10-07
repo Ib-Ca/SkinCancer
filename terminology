@@ -1,0 +1,41 @@
+dx
+diagnostico
+
+dx_type
+tipo de diagnostico
+
+nv
+nevo melanocítico
+
+ml
+melanoma
+
+bkl
+queratosis benigna
+
+bcc
+carcinoma basocelular
+
+akiec
+queratosis actínica enfermedad de bowen
+
+vasc
+lesión vascular en la piel
+
+df
+dermatofibromas
+
+print(len(os.listdir('base_dir/train_dir/nv')))
+print(len(os.listdir('base_dir/train_dir/mel')))
+print(len(os.listdir('base_dir/train_dir/bkl')))
+print(len(os.listdir('base_dir/train_dir/bcc')))
+print(len(os.listdir('base_dir/train_dir/akiec')))
+print(len(os.listdir('base_dir/train_dir/vasc')))
+print(len(os.listdir('base_dir/train_dir/df')))
+print(len(os.listdir('base_dir/val_dir/nv')))
+print(len(os.listdir('base_dir/val_dir/mel')))
+print(len(os.listdir('base_dir/val_dir/bkl')))
+print(len(os.listdir('base_dir/val_dir/bcc')))
+print(len(os.listdir('base_dir/val_dir/akiec')))
+print(len(os.listdir('base_dir/val_dir/vasc')))
+print(len(os.listdir('base_dir/val_dir/df')))

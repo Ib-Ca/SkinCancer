@@ -1,0 +1,5 @@
+train_dir/*
+!train_dir/.gitkeep
+
+val_dir/*
+!val_dir/.gitkeep
