@@ -67,7 +67,10 @@ train_list = list(df_train['image_id'])
 val_list = list(df_val['image_id'])
 
 def is_directory_empty(dir_path):
-    return all(f.startswith('.') for f in os.listdir(dir_path))
+    for root, dirs, files in os.walk(dir_path):
+        if files:
+            return False
+    return True
 
 if is_directory_empty(train_dir) and is_directory_empty(val_dir):
     metadata.set_index('image_id', inplace=True)
