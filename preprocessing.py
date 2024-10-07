@@ -60,12 +60,14 @@ df_train = metadata[metadata['train_or_val'] == 'train']
 #print("valores de validacion: ", df_val['dx'].value_counts())
 
 #mover archivos
-metadata.set_index('image_id', inplace=True)
+print(metadata.columns)
+print(metadata.head())
+if metadata.index.name != 'image_id':
+    metadata.set_index('image_id', inplace=True)
 folder_1 = os.listdir('../ham10000_images_part_1')
 folder_2 = os.listdir('../ham10000_images_part_2')
 train_list = list(df_train['image_id'])
 val_list = list(df_val['image_id'])
-
 def is_directory_empty(dir_path):
     for root, dirs, files in os.walk(dir_path):
         if files:
@@ -103,7 +105,6 @@ if is_directory_empty(train_dir) and is_directory_empty(val_dir):
             shutil.copyfile(src, dst)
 else:
     print("Los archivos ya han sido copiados previamente.")
-
 
 end_time = time.time()
 execution_time = end_time - start_time
