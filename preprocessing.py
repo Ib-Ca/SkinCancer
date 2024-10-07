@@ -100,7 +100,7 @@ for image in val_list:
         shutil.copyfile(src, dst)
 '''        
 
-# Modelo Building-Training
+# modelo Building-Training
 train_csv_file = 'train_images_labels.csv'
 val_csv_file = 'val_images_labels.csv'
 
