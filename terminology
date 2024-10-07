@@ -39,3 +39,53 @@ print(len(os.listdir('base_dir/val_dir/bcc')))
 print(len(os.listdir('base_dir/val_dir/akiec')))
 print(len(os.listdir('base_dir/val_dir/vasc')))
 print(len(os.listdir('base_dir/val_dir/df')))
+
+
+
+# Create a new directory
+base_dir = 'base_dir'
+os.mkdir(base_dir)
+
+# train_dir
+train_dir = os.path.join(base_dir, 'train_dir')
+os.mkdir(train_dir)
+
+# val_dir
+val_dir = os.path.join(base_dir, 'val_dir')
+os.mkdir(val_dir)
+
+
+# create new folders inside train_dir
+nv = os.path.join(train_dir, 'nv')
+os.mkdir(nv)
+mel = os.path.join(train_dir, 'mel')
+os.mkdir(mel)
+bkl = os.path.join(train_dir, 'bkl')
+os.mkdir(bkl)
+bcc = os.path.join(train_dir, 'bcc')
+os.mkdir(bcc)
+akiec = os.path.join(train_dir, 'akiec')
+os.mkdir(akiec)
+vasc = os.path.join(train_dir, 'vasc')
+os.mkdir(vasc)
+df = os.path.join(train_dir, 'df')
+os.mkdir(df)
+
+
+
+# create new folders inside val_dir
+nv = os.path.join(val_dir, 'nv')
+os.mkdir(nv)
+mel = os.path.join(val_dir, 'mel')
+os.mkdir(mel)
+bkl = os.path.join(val_dir, 'bkl')
+os.mkdir(bkl)
+bcc = os.path.join(val_dir, 'bcc')
+os.mkdir(bcc)
+akiec = os.path.join(val_dir, 'akiec')
+os.mkdir(akiec)
+vasc = os.path.join(val_dir, 'vasc')
+os.mkdir(vasc)
+df = os.path.join(val_dir, 'df')
+os.mkdir(df)
+
