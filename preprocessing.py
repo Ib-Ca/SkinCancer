@@ -60,51 +60,42 @@ df_train = metadata[metadata['train_or_val'] == 'train']
 #print("valores de validacion: ", df_val['dx'].value_counts())
 
 #mover archivos
-print(metadata.columns)
-print(metadata.head())
-if metadata.index.name != 'image_id':
-    metadata.set_index('image_id', inplace=True)
+metadata.set_index('image_id', inplace=True)
 folder_1 = os.listdir('../ham10000_images_part_1')
 folder_2 = os.listdir('../ham10000_images_part_2')
 train_list = list(df_train['image_id'])
 val_list = list(df_val['image_id'])
-def is_directory_empty(dir_path):
-    for root, dirs, files in os.walk(dir_path):
-        if files:
-            return False
-    return True
 
-if is_directory_empty(train_dir) and is_directory_empty(val_dir):
-    metadata.set_index('image_id', inplace=True)
-    folder_1 = os.listdir('../ham10000_images_part_1')
-    folder_2 = os.listdir('../ham10000_images_part_2')
-    train_list = list(df_train['image_id'])
-    val_list = list(df_val['image_id'])
-    for image in train_list:
-        fname = image + '.jpg'
-        label = metadata.loc[image, 'dx']
-        if fname in folder_1:
-            src = os.path.join('../ham10000_images_part_1', fname)
-            dst = os.path.join(train_dir, label, fname)
-            shutil.copyfile(src, dst)
-        elif fname in folder_2:
-            src = os.path.join('../ham10000_images_part_2', fname)
-            dst = os.path.join(train_dir, label, fname)
-            shutil.copyfile(src, dst)
-    for image in val_list:
-        fname = image + '.jpg'
-        label = metadata.loc[image, 'dx']
-        if fname in folder_1:
-            # Copiar desde part_1
-            src = os.path.join('../ham10000_images_part_1', fname)
-            dst = os.path.join(val_dir, label, fname)
-            shutil.copyfile(src, dst)
-        elif fname in folder_2:
-            # Copiar desde part_2
-            src = os.path.join('../ham10000_images_part_2', fname)
-            shutil.copyfile(src, dst)
-else:
-    print("Los archivos ya han sido copiados previamente.")
+for image in train_list:
+    
+    fname = image + '.jpg'
+    label = metadata.loc[image,'dx']
+    
+    if fname in folder_1:
+        src = os.path.join('../ham10000_images_part_1', fname)
+        dst = os.path.join(train_dir, label, fname)
+        shutil.copyfile(src, dst)
+
+    if fname in folder_2:
+        src = os.path.join('../ham10000_images_part_2', fname)
+        dst = os.path.join(train_dir, label, fname)
+        shutil.copyfile(src, dst)
+
+for image in val_list:
+    fname = image + '.jpg'
+    label = metadata.loc[image,'dx']
+    if fname in folder_1:
+        src = os.path.join('../ham10000_images_part_1', fname)
+        dst = os.path.join(val_dir, label, fname)
+        shutil.copyfile(src, dst)
+
+    if fname in folder_2:
+        src = os.path.join('../ham10000_images_part_2', fname)
+        dst = os.path.join(val_dir, label, fname)
+        shutil.copyfile(src, dst)
+        
+        
+        
 
 end_time = time.time()
 execution_time = end_time - start_time
