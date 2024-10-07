@@ -3,3 +3,7 @@ train_dir/*
 
 val_dir/*
 !val_dir/.gitkeep
+
+*.png
+*.jpg
+*.jpeg
